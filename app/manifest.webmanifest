@@ -1,0 +1,13 @@
+{
+  "name": "מקדש הכוכבים",
+  "short_name": "מקדש הכוכבים",
+  "description": "12 מבני אישיות: זיהוי, הבנה ותרגול גמישות.",
+  "lang": "he", "dir": "rtl",
+  "start_url": "./", "scope": "./", "display": "standalone",
+  "background_color": "#f3eee3", "theme_color": "#0c1128",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
