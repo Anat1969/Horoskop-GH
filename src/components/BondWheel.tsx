@@ -1,5 +1,6 @@
 import { SIGNS } from '../data/content';
-import { kindOf, relation, byId, type Kind } from '../lib/relations';
+import { byId, harmonyColor, metrics, relation, type Kind } from '../lib/relations';
+const relationOf = (a: string, b: string) => relation(byId[a], byId[b]);
 
 // גלגל קשרים: 12 מבנים, ומיתרים בין מבנים. סוג הקו = סוג הקשר.
 const rad = (d: number) => (d * Math.PI) / 180;
@@ -36,13 +37,13 @@ export function BondWheel({ picks = [], people = [], links, onPick, label }: { p
       })}
       <circle r="204" fill="#fafafa" stroke="#111" strokeWidth=".75" />
       {L.map(([a, b], k) => {
-        const ka = kindOf(relation(byId[a], byId[b]).deg), st = KIND_STYLE[ka];
-        if (a === b) { const [x, y] = pt(mid(a), 184); return <circle key={k} cx={x} cy={y} r="14" fill="none" stroke={st.c} strokeWidth={st.w} strokeDasharray={st.dash} />; }
+        const m = metrics(byId[a], byId[b]), c = harmonyColor(m.harmony), w = 1 + m.intensity * 2.2;
+        if (a === b) { const [x, y] = pt(mid(a), 184); return <circle key={k} cx={x} cy={y} r="14" fill="none" stroke={c} strokeWidth={w} />; }
         const [x1, y1] = pt(mid(a), 198), [x2, y2] = pt(mid(b), 198);
-        return <path key={k} d={`M${x1},${y1} Q0,0 ${x2},${y2}`} fill="none" stroke={st.c} strokeWidth={st.w} strokeDasharray={st.dash} opacity={L.length > 1 ? 0.75 : 1} />;
+        return <path key={k} d={`M${x1},${y1} Q0,0 ${x2},${y2}`} fill="none" stroke={c} strokeWidth={w} strokeLinecap="round" opacity={L.length > 1 ? 0.8 : 1} />;
       })}
       {picks.length === 2 && (() => {
-        const r = relation(byId[picks[0]], byId[picks[1]]);
+        const r = relationOf(picks[0], picks[1]);
         return (<g><circle r="46" fill="#fff" stroke="#111" strokeWidth=".75" />
           <text y="-8" textAnchor="middle" fontSize="22" fontWeight="300" fontFamily="var(--mono)">{r.deg}°</text>
           <text y="16" textAnchor="middle" fontSize="13" fontWeight="300" style={{ direction: 'rtl' }}>{r.name}</text></g>);

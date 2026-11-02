@@ -68,8 +68,8 @@ export function Sky({ route }: { route: Route }) {
         </div>
         <div className="stage-side">
           <div className="ops" style={{ justifyContent: 'flex-start' }}>
-            <button className="press icon-btn" aria-label={play ? 'עצירה' : 'הפעלת הזמן'} title={play ? 'עצירה' : 'הפעלת הזמן'} onClick={() => { if (year >= MAX) setYear(MIN); setPlay(!play); }}>{play ? <IconPause /> : <IconPlay />}</button>
-            <button className="press icon-btn" aria-label="חזרה להיום" title="חזרה להיום" onClick={() => { setPlay(false); setYear(thisYear); }}><IconX /></button>
+            <button className="press icon-btn" aria-label={play ? 'עצירה' : 'הפעלת הזמן'} data-tip={play ? 'עצירת הזמן' : 'הפעלה: הזמן רץ קדימה'} onClick={() => { if (year >= MAX) setYear(MIN); setPlay(!play); }}>{play ? <IconPause /> : <IconPlay />}</button>
+            <button className="press icon-btn" aria-label="חזרה להיום" data-tip="איפוס: חזרה לשנה הנוכחית" onClick={() => { setPlay(false); setYear(thisYear); }}><IconX /></button>
             <span className="label">הזמן רץ <bdi className="num">250</bdi> שנה בשנייה</span>
           </div>
           <div className="yearbar">

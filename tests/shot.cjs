@@ -3,7 +3,7 @@ const { chromium } = require('playwright');
 const path = require('path');
 const BASE = process.env.BASE || 'http://localhost:4173/';
 const OUT = process.argv[2] || 'shots';
-const PAGES = ['', 'atlas', 'sign/aries', 'quiz', 'bond', 'flex', 'sky', 'read'];
+const PAGES = ['', 'atlas', 'sign/aries', 'quiz', 'bond', 'flex', 'sky', 'cultures', 'read', 'key'];
 (async () => {
   const b = await chromium.launch();
   for (const [w, h, tag] of [[1280, 900, 'd'], [390, 844, 'm']]) {

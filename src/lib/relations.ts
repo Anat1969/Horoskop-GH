@@ -75,3 +75,34 @@ export function analyze(a: Sign, b: Sign) {
     practiceSrc: bridgeAB ? `גשר של ${plainName(a)}` : bridgeBA ? `גשר של ${plainName(b)}` : `תרגול ל${r.name}`,
   };
 }
+
+// ---------- מדדי קשר: כל מדד עם כלל גלוי ----------
+// טיב (הרמוניה): היבטים רכים חיוביים, קשים שליליים. מקור: תלמי, טטרביבלוס א, יג; היבטים משניים: קפלר, 1619.
+export const HARMONY: Record<number, number> = { 0: 1, 30: -0.5, 60: 1.5, 90: -1.5, 120: 2, 150: -1, 180: -1 };
+// עוצמה (דינמיקה): כמה אנרגיה הקשר מייצר, בלי קשר לסימן.
+export const INTENSITY: Record<number, number> = { 0: 2, 30: 0.5, 60: 1, 90: 2, 120: 1, 150: 1.5, 180: 2 };
+const COMPL: Record<string, string> = { fire: 'air', air: 'fire', earth: 'water', water: 'earth' };
+export interface Metrics { harmony: number; intensity: number; similarity: number; complement: number }
+export function metrics(a: Sign, b: Sign): Metrics {
+  const d = relation(a, b).deg;
+  const sameEl = a.elc === b.elc ? 1 : 0, sameMo = a.mo === b.mo ? 1 : 0;
+  const compEl = COMPL[a.elc] === b.elc ? 1 : 0;
+  return {
+    harmony: HARMONY[d],               // -2..2
+    intensity: INTENSITY[d],           // 0..2
+    similarity: sameEl + sameMo,       // 0..2
+    complement: compEl + (sameMo ? 0 : 1), // 0..2: יסוד משלים, ואופן שונה
+  };
+}
+/** צבע על סקאלה מתפצלת: שלילי, ניטרלי, חיובי. */
+export function harmonyColor(h: number) {
+  if (h >= 1.75) return 'var(--pos)';
+  if (h >= 0.75) return 'var(--pos-2)';
+  if (h > -0.75) return 'var(--zero)';
+  if (h > -1.25) return 'var(--neg-2)';
+  return 'var(--neg)';
+}
+export function allFrom(a: Sign) {
+  return SIGNS.filter((s) => s.id !== a.id).map((s) => ({ s, r: relation(a, s), m: metrics(a, s) }))
+    .sort((x, y) => y.m.harmony - x.m.harmony || x.r.deg - y.r.deg);
+}

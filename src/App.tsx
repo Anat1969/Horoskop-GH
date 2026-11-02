@@ -9,9 +9,11 @@ import { Flex } from './pages/Flex';
 import { Sky } from './pages/Sky';
 import { Read } from './pages/Read';
 import { Bond } from './pages/Bond';
+import { Cultures } from './pages/Cultures';
+import { Key } from './pages/Key';
 import { byId } from './lib/relations';
 
-const TITLES: Record<string, string> = { home: 'מקדש הכוכבים', atlas: 'אטלס', quiz: 'אבחון עצמי', flex: 'סימולטור גמישות', sky: 'השמיים היום', read: 'כתבה', bond: 'קשרים' };
+const TITLES: Record<string, string> = { home: 'מקדש הכוכבים', atlas: 'אטלס', quiz: 'אבחון עצמי', flex: 'סימולטור גמישות', sky: 'השמיים היום', read: 'כתבה', bond: 'קשרים', cultures: 'תרבויות', key: 'מקרא' };
 
 export function App() {
   const r = useRoute();
@@ -33,9 +35,13 @@ export function App() {
         {page === 'sky' && <Sky route={r} />}
         {page === 'read' && <Read />}
         {page === 'bond' && <Bond route={r} />}
+        {page === 'cultures' && <Cultures />}
+        {page === 'key' && <Key />}
       </main>
       <footer className="footer">
         <span>מקדש הכוכבים · 12 מבנים, אף אחד מהם אינו גורל.</span>
+        <span>כפתור A&I בפינה: העתקת קישור למצב הנוכחי, התקנה כאפליקציה, ושיחת הפיתוח.</span>
+        <a href="#/key">מקרא: איך לקרוא את האפליקציה</a>
         <span>הנתונים שלך נשמרים רק במכשיר הזה.</span>
       </footer>
     </>

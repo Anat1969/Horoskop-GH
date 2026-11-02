@@ -2,6 +2,8 @@ import { SIGNS } from '../data/content';
 import { ELEMENTS, MODES } from '../data/meta';
 import { Purpose } from '../components/Purpose';
 import { Chooser } from '../components/Chooser';
+import { Hint, elIcon, moIcon } from '../components/Grammar';
+import { Icon } from '../components/Icon';
 import { SignCard } from '../components/SignCard';
 import { Rich } from '../lib/rich';
 import { setQuery, type Route } from '../lib/route';
@@ -25,19 +27,20 @@ export function Atlas({ route }: { route: Route }) {
       </header>
       <Purpose why={'לראות את **כל 12** במבט אחד, ולמה כל מזל נמצא במקומו.'} how={'מסננים לפי **יסוד** ו**אופן**, ולוחצים על מבנה.'} get={'הבנה של **המבנה** שמאחורי המזלות, לא רשימה.'} />
       <div className="card filters">
-        <Chooser label="יסוד" opts={ELEMENTS.map((e) => ({ key: e.key, label: e.he, color: e.color }))} value={els} onChange={(v) => setQuery({ el: v.join(',') })} />
-        <Chooser label="אופן" opts={MODES.map((m) => ({ key: m.key, label: m.he }))} value={mos} onChange={(v) => setQuery({ mo: v.join(',') })} />
+        <Chooser label="יסוד" opts={ELEMENTS.map((e) => ({ key: e.key, label: e.he, icon: <Icon n={elIcon(e.key)} size={15} color={e.color} /> }))} value={els} onChange={(v) => setQuery({ el: v.join(',') })} />
+        <Chooser label="אופן" opts={MODES.map((m) => ({ key: m.key, label: m.he, icon: <Icon n={moIcon(m.key)} size={15} color="var(--g-600)" /> }))} value={mos} onChange={(v) => setQuery({ mo: v.join(',') })} />
+        <Hint>לחיצה על יסוד או אופן מציגה רק אותו · <strong>+</strong> מוסיף עוד אחד · <strong>−</strong> מסיר · "הכול" מאפס</Hint>
         <span className="src">מוצגים <bdi className="num">{shown}</bdi> מתוך <bdi className="num">12</bdi>{hitIds.size ? ` · מודגשות התאמות לחיפוש "${q}"` : ''}. השאר מעומעמים, כדי שהמבנה השלם יישאר גלוי.</span>
       </div>
       <section className="matrix" aria-label="מטריצת יסודות ואופנים">
         <div className="corner" />
         {MODES.map((m) => (
-          <div className="mh" key={m.key}><span className="label">{m.term}</span><b style={{ fontSize: 20 }}>{m.he}</b><Rich text={m.line} className="src" /></div>
+          <div className="mh" key={m.key}><span className="label">{m.term}</span><b style={{ fontSize: 20, fontWeight: 400, display: 'flex', gap: 6, alignItems: 'center' }}><Icon n={moIcon(m.key)} size={18} color="var(--g-600)" />{m.he}</b><Rich text={m.line} className="src" /></div>
         ))}
         {ELEMENTS.map((e) => (
           <div key={e.key} style={{ display: 'contents' }}>
             <div className="rh" style={{ borderColor: e.color }}>
-              <b style={{ fontSize: 22, fontWeight: 300 }}><span className="swatch" style={{ background: e.color }} />{e.he}<span className="en">{e.en}</span></b>
+              <b style={{ fontSize: 22, fontWeight: 300, display: 'flex', gap: 6, alignItems: 'center' }}><Icon n={elIcon(e.key)} size={20} color={e.color} />{e.he}<span className="en">{e.en}</span></b>
               <Rich text={e.line} className="src" />
             </div>
             {MODES.map((m) => {

@@ -2,6 +2,7 @@ import { SCENARIOS, SIGNS } from '../data/content';
 import { ELEMENTS, EL } from '../data/meta';
 import { Purpose } from '../components/Purpose';
 import { Glyph } from '../components/Glyph';
+import { ElTag, Hint } from '../components/Grammar';
 import { IconNext, IconPrev, IconReset } from '../components/icons';
 import { Rich } from '../lib/rich';
 import { byId } from '../lib/relations';
@@ -37,16 +38,17 @@ export function Flex() {
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 8 }}>
             <span className="label">מצב</span>
             <div className="ops">
-              <button className="press icon-btn" aria-label="המצב הקודם" title="המצב הקודם" disabled={i === 0} onClick={() => setI(i - 1)}><IconPrev /></button>
-              <button className="press icon-btn" aria-label="המצב הבא" title="המצב הבא" disabled={i === SCENARIOS.length - 1} onClick={() => setI(i + 1)}><IconNext /></button>
+              <button className="press icon-btn" aria-label="המצב הקודם" data-tip="המצב הקודם" disabled={i === 0} onClick={() => setI(i - 1)}><IconPrev /></button>
+              <button className="press icon-btn" aria-label="המצב הבא" data-tip="המצב הבא" disabled={i === SCENARIOS.length - 1} onClick={() => setI(i + 1)}><IconNext /></button>
             </div>
           </div>
           <h2 className="sc-title">{sc.title}</h2>
           <p className="explain">{sc.body}</p>
+          <Hint>בוחרים מבנה אחד. אפשר לשנות בחירה, ורק האחרונה נספרת.</Hint>
           <div className="pickgrid" role="group" aria-label="בחירת מבנה">
             {ELEMENTS.map((e) => (
               <div key={e.key} className="pickcol">
-                <span className="label"><span className="swatch" style={{ background: e.color }} />{e.he}</span>
+                <span className="label"><ElTag el={e.key} /></span>
                 {SIGNS.filter((s) => s.elc === e.key).map((s) => {
                   const state = pick ? (sc.best.includes(s.id) ? 'best' : sc.ok.includes(s.id) ? 'ok' : s.id === pick ? 'miss' : '') : '';
                   return (
@@ -74,7 +76,7 @@ export function Flex() {
           <div className="big-score"><bdi className="num">{pts}</bdi><span className="src"> / <bdi className="num">{SCENARIOS.length * 2}</bdi> נקודות</span></div>
           <p className="src">מדויק = <bdi className="num">2</bdi>, קרוב = <bdi className="num">1</bdi>. נענו <bdi className="num">{done.length}</bdi> מתוך <bdi className="num">{SCENARIOS.length}</bdi>.</p>
           <div className="label" style={{ marginTop: 12 }}>יסודות שהשתמשת בהם נכון</div>
-          <div className="el-dots">{ELEMENTS.map((e) => <span key={e.key} className={usedEls.has(e.key) ? 'on' : ''} style={{ ['--c' as string]: e.color }}>{e.he}</span>)}</div>
+          <div className="el-dots">{ELEMENTS.map((e) => <span key={e.key} className={usedEls.has(e.key) ? 'on' : ''} style={{ ['--c' as string]: e.color }}><ElTag el={e.key} name={false} size={13} /> {e.he}</span>)}</div>
           <Rich className="src" text={`**${usedEls.size} מתוך 4** יסודות. גמישות מלאה = כל הארבעה.`} />
           {ownShare != null && (
             <div className="tone tone-neutral" style={{ marginTop: 12 }}><h3>הנטייה שלך</h3>

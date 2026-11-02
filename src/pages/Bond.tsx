@@ -1,13 +1,16 @@
 import { useState } from 'react';
 import { SIGNS, type ElementKey } from '../data/content';
 import { ELEMENTS } from '../data/meta';
-import { BondWheel, KIND_STYLE, type Person } from '../components/BondWheel';
+import { BondWheel, type Person } from '../components/BondWheel';
+import { HarmonyKey, PairMeters, RelBars, RelMatrix, RelRadial } from '../components/RelViz';
+import { ASPECT_ICON, Icon } from '../components/Icon';
+import { ElTag, Hint } from '../components/Grammar';
 import { Glyph } from '../components/Glyph';
 import { Purpose } from '../components/Purpose';
 import { IconX } from '../components/icons';
 import { Rich } from '../lib/rich';
 import { setQuery, type Route } from '../lib/route';
-import { analyze, byId, KIND_LABEL, kindOf, plainName, relation, type Kind } from '../lib/relations';
+import { analyze, byId, harmonyColor, KIND_LABEL, kindOf, metrics, plainName, relation, type Kind } from '../lib/relations';
 import { load, useStored } from '../lib/store';
 
 const ASK: Record<ElementKey, string> = { fire: 'מי יתחיל?', earth: 'מי יחזיק את המבנה?', air: 'מי יחבר בין הרעיונות?', water: 'מי ירגיש את מה שלא נאמר?' };
@@ -23,15 +26,6 @@ function SignPicker({ label, value, onPick }: { label: string; value: string; on
           </button>
         ))}
       </div>
-    </div>
-  );
-}
-function KindKey() {
-  return (
-    <div className="kind-key" aria-label="מקרא סוגי קשר">
-      {(['flow', 'tension', 'neutral'] as Kind[]).map((k) => (
-        <span key={k}><svg width="34" height="10" aria-hidden="true"><line x1="0" y1="5" x2="34" y2="5" stroke={KIND_STYLE[k].c} strokeWidth={KIND_STYLE[k].w} strokeDasharray={KIND_STYLE[k].dash} /></svg>{KIND_LABEL[k]}</span>
-      ))}
     </div>
   );
 }
@@ -69,26 +63,46 @@ export function Bond({ route }: { route: Route }) {
       <section className="bond-layout">
         <div className="bond-wheel card">
           <BondWheel picks={[a, b]} onPick={pickWheel} label={`הקשר בין ${an} ל${bn}`} />
-          <p className="src" style={{ textAlign: 'center' }}>לחיצה על הגלגל בוחרת את {next === 'a' ? 'הצד הראשון' : 'הצד השני'}.</p>
-          <KindKey />
+          <Hint>לחיצה על מזל בגלגל בוחרת לסירוגין את שני הצדדים. עכשיו: <strong>{next === 'a' ? 'צד א' : 'צד ב'}</strong>.</Hint>
+          <HarmonyKey />
         </div>
         <div className="bond-side">
           <SignPicker label={`צד א: ${an}`} value={a} onPick={(id) => setQuery({ a: id, an: null })} />
           <SignPicker label={`צד ב: ${bn}`} value={b} onPick={(id) => setQuery({ b: id, bn: null })} />
           <div className="bond-title">
             <a href={'#/sign/' + a} className="press-link">{an}</a>
-            <span className="bond-mid"><span className="label">{x.r.rule}</span><strong>{x.r.name}</strong><span className="src">{KIND_LABEL[x.kind]}</span></span>
+            <span className="bond-mid"><Icon n={ASPECT_ICON[x.r.deg]} size={34} color={harmonyColor(metrics(A, B).harmony)} /><strong>{x.r.name}</strong><span className="label">{x.r.rule}</span><span className="src">{KIND_LABEL[x.kind]}</span></span>
             <a href={'#/sign/' + b} className="press-link">{bn}</a>
           </div>
+          <PairMeters a={A} b={B} />
           <Rich text={x.r.meaning} className="explain" />
           <div className="duo">
-            <div className="tone tone-neutral"><h3>יסודות</h3><Rich text={x.el} /></div>
+            <div className="tone tone-neutral"><h3>יסודות <ElTag el={A.elc} name={false} /> <ElTag el={B.elc} name={false} /></h3><Rich text={x.el} /></div>
             <div className="tone tone-neutral"><h3>קצב</h3><Rich text={x.mo} /></div>
             <div className="tone tone-solution"><h3>מה {an} נותן</h3><Rich text={x.aGives} /></div>
             <div className="tone tone-solution"><h3>מה {bn} נותן</h3><Rich text={x.bGives} /></div>
           </div>
           <div className="tone tone-problem"><h3>איפה זה נתקע</h3><Rich text={x.stuck} /></div>
-          <div className="tone tone-insight"><h3>תרגול משותף · {x.practiceSrc}</h3><p><mark>{x.practice}</mark></p></div>
+          <div className="tone tone-action"><h3>תרגול משותף · {x.practiceSrc}</h3><p><mark>{x.practice}</mark></p></div>
+        </div>
+      </section>
+
+      <section className="card">
+        <div className="section-title"><h2>{an} מול כל המזלות</h2><span className="label">מהזורם ביותר למותח ביותר</span></div>
+        <div className="all-rel">
+          <RelRadial a={A} onPick={(id) => setQuery({ b: id, bn: null })} />
+          <div><RelBars a={A} onPick={(id) => { setQuery({ b: id, bn: null }); window.scrollTo({ top: 0, behavior: 'smooth' }); }} /><HarmonyKey /><Hint>ריחוף על שורה מסביר את הזווית. לחיצה טוענת את הזוג למעלה.</Hint></div>
+        </div>
+      </section>
+
+      <section className="card">
+        <div className="section-title"><h2>כל 66 הקשרים</h2><span className="label">שורה וטור: שני מבנים. צבע: טיב. אייקון: הזווית.</span></div>
+        <RelMatrix a={a} b={b} onPick={(r, c) => { setQuery({ a: r, b: c, an: null, bn: null }); window.scrollTo({ top: 0, behavior: 'smooth' }); }} />
+        <HarmonyKey />
+        <div className="pst" style={{ marginTop: 12 }}>
+          <div className="tone tone-insight"><h3>תובנה</h3><Rich text={'==הצבע יוצר אלכסונים: אותו יסוד זורם, יסוד שכן מותח.==\nהגלגל בנוי כמו מוזיקה: מרווחים קבועים.'} /></div>
+          <div className="tone tone-neutral"><h3>כלל הטיב</h3><Rich text={'**120°** ו-**60°** זורמים. **90°** ו-**180°** מותחים.\nמקור: תלמי, טטרביבלוס. **30°** ו-**150°**: קפלר, 1619.'} /></div>
+          <div className="tone tone-problem"><h3>המגבלה</h3><Rich text={'זה טיב של **מבנים**, לא של אנשים.\nקשר מותח הוא לרוב הקשר שמלמד הכי הרבה.'} /></div>
         </div>
       </section>
 
@@ -109,13 +123,13 @@ export function Bond({ route }: { route: Route }) {
           <div className="circle-grid">
             <div>
               <BondWheel people={people} links={pairs.map((x) => [x.p.sign, x.q.sign] as [string, string])} label="מפת הקשרים של המעגל" />
-              <KindKey />
+              <HarmonyKey />
             </div>
             <div className="circle-side">
               <div className="people">
                 {people.map((p) => (
                   <span key={p.id} className="person"><Glyph sym={byId[p.sign].sym} size={15} /> <strong>{p.name}</strong> <span className="src">{plainName(byId[p.sign])}</span>
-                    <button className="x-btn" aria-label={'הסרת ' + p.name} title="הסרה" onClick={() => setPeople(people.filter((q) => q.id !== p.id))}><IconX /></button></span>
+                    <button className="x-btn" aria-label={'הסרת ' + p.name} data-tip="הסרה מהמעגל" onClick={() => setPeople(people.filter((q) => q.id !== p.id))}><IconX /></button></span>
                 ))}
               </div>
               <div>
@@ -138,7 +152,7 @@ export function Bond({ route }: { route: Route }) {
                 {pairs.map(({ p, q, r, kind }) => (
                   <li key={p.id + q.id}>
                     <button className="press pair" onClick={() => { setQuery({ a: p.sign, b: q.sign, an: p.name, bn: q.name }); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
-                      <svg width="28" height="10" aria-hidden="true"><line x1="0" y1="5" x2="28" y2="5" stroke={KIND_STYLE[kind].c} strokeWidth={KIND_STYLE[kind].w} strokeDasharray={KIND_STYLE[kind].dash} /></svg>
+                      <Icon n={ASPECT_ICON[r.deg]} size={20} color={harmonyColor(metrics(byId[p.sign], byId[q.sign]).harmony)} label={KIND_LABEL[kind]} />
                       <span><strong>{p.name}</strong> ו<strong>{q.name}</strong></span>
                       <span className="src">{r.name} · {r.deg}°</span>
                     </button>

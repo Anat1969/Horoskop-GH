@@ -16,7 +16,7 @@ const ok = (c, m) => { console.log((c ? 'PASS ' : 'FAIL ') + m); if (!c) fails++
     ok(!(await p.locator('header >> text=העתקת קישור').first().isVisible().catch(() => false)), `${tag}: no loose dev buttons in the bar`);
     ok((await p.locator('html').getAttribute('dir')) === 'rtl', `${tag}: RTL`);
     // ניווט בכל הדפים, בלי גלילה אופקית
-    for (const pg of ['atlas', 'sign/leo', 'quiz', 'bond', 'flex', 'sky', 'read', '']) {
+    for (const pg of ['atlas', 'sign/leo', 'quiz', 'bond', 'flex', 'sky', 'cultures', 'read', 'key', '']) {
       await p.goto(BASE + '#/' + pg); await p.waitForTimeout(400);
       const ow = await p.evaluate(() => document.documentElement.scrollWidth - innerWidth);
       ok(ow <= 0, `${tag}: no horizontal scroll on #/${pg}`);
@@ -50,7 +50,7 @@ const ok = (c, m) => { console.log((c ? 'PASS ' : 'FAIL ') + m); if (!c) fails++
     ok(await p.getByText('כמה הפרופיל אמין?').isVisible(), `${tag}: reliability metrics shown`);
     ok((await p.locator('.result-hero h1').textContent()).includes('טָלֶה'), `${tag}: all-fire answers yield Aries`);
     // מטרת הדף בכל דף
-    for (const pg of ['', 'atlas', 'sign/leo', 'bond', 'flex', 'sky', 'read']) {
+    for (const pg of ['', 'atlas', 'sign/leo', 'bond', 'flex', 'sky', 'cultures', 'read', 'key']) {
       await p.goto(BASE + '#/' + pg); await p.waitForTimeout(250);
       ok(await p.getByRole('region', { name: 'מטרת הדף' }).isVisible(), `${tag}: purpose block on #/${pg}`);
     }
@@ -59,7 +59,7 @@ const ok = (c, m) => { console.log((c ? 'PASS ' : 'FAIL ') + m); if (!c) fails++
     ok((await p.locator('.bond-mid').textContent()).includes('ניגוד'), `${tag}: Aries-Libra is an opposition`);
     await p.getByRole('group', { name: /צד ב/ }).getByRole('button', { name: 'אריה' }).click();
     ok((await p.locator('.bond-mid').textContent()).includes('משולש'), `${tag}: Aries-Leo is a trine`);
-    ok(await p.locator('.tone-insight', { hasText: 'תרגול משותף' }).isVisible(), `${tag}: joint practice shown`);
+    ok(await p.locator('.tone-action', { hasText: 'תרגול משותף' }).isVisible(), `${tag}: joint practice shown`);
     // קשרים: מעגל
     for (const [n, sg] of [['דנה', 'aries'], ['יואב', 'cancer'], ['מיכל', 'libra']]) {
       await p.fill('#pn', n); await p.selectOption('#ps', sg); await p.getByRole('button', { name: 'הוספה למעגל' }).click();
@@ -75,6 +75,28 @@ const ok = (c, m) => { console.log((c ? 'PASS ' : 'FAIL ') + m); if (!c) fails++
     const g = p.locator('.hero-wheel g[role=button]').first();
     await g.focus();
     ok((await g.evaluate((e) => getComputedStyle(e).outlineStyle)) === 'none', `${tag}: no square outline on wheel sign`);
+    // קשרים: מול כל המזלות ומטריצה
+    await p.goto(BASE + '#/bond?a=aries&b=cancer'); await p.waitForTimeout(300);
+    ok(await p.locator('.relbar-row').count() === 11, `${tag}: Aries vs all 11 others`);
+    ok(await p.locator('.rm-cell').count() === 132, `${tag}: matrix has 132 off-diagonal cells`);
+    await p.locator('.rm-cell').nth(5).click(); await p.waitForTimeout(200);
+    ok(!p.url().includes('b=cancer'), `${tag}: matrix click loads a new pair`);
+    ok(await p.locator('.meters .meter').count() === 4, `${tag}: four pair meters`);
+    // דף מבנה: מול כל המזלות
+    await p.goto(BASE + '#/sign/leo'); await p.waitForTimeout(300);
+    ok(await p.locator('.relbar-row').count() === 11, `${tag}: sign page shows relations to all`);
+    // תרבויות
+    await p.goto(BASE + '#/cultures'); await p.waitForTimeout(500);
+    ok(await p.locator('.culture').count() === 9, `${tag}: nine culture cards`);
+    ok(await p.locator('svg[aria-label^="מפת התרבויות"] path').count() > 5, `${tag}: world map renders`);
+    ok(await p.locator('table.names tbody tr').count() === 12, `${tag}: names table has 12 signs`);
+    // מקרא
+    await p.goto(BASE + '#/key'); await p.waitForTimeout(300);
+    ok(await p.locator('.format').count() === 14, `${tag}: key lists 14 formats`);
+    ok(await p.locator('.hidden-item').count() >= 8, `${tag}: hidden buttons explained`);
+    // תוויות לכפתורים חבויים
+    await p.goto(BASE + '#/sign/aries'); await p.waitForTimeout(300);
+    ok((await p.locator('.ops [data-tip]').count()) === 3, `${tag}: icon buttons carry tooltips`);
     // גמישות
     await p.goto(BASE + '#/flex'); await p.waitForTimeout(300);
     await p.locator('.pick', { hasText: 'סרטן' }).click();

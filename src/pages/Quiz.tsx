@@ -2,6 +2,7 @@ import { QUIZ } from '../data/content';
 import { ELEMENTS, MODES } from '../data/meta';
 import { Purpose } from '../components/Purpose';
 import { Glyph } from '../components/Glyph';
+import { ElTag, ModeTag } from '../components/Grammar';
 import { Rich } from '../lib/rich';
 import { go } from '../lib/route';
 import { byId } from '../lib/relations';
@@ -69,7 +70,7 @@ export function Quiz() {
         <div className="card">
           <div className="section-title"><h2>יסודות</h2><span className="label">מה מניע אותך</span></div>
           {ELEMENTS.map((e) => (
-            <div key={e.key} className="bar-row"><span><strong>{e.he}</strong></span>
+            <div key={e.key} className="bar-row"><span><ElTag el={e.key} /></span>
               <div className="bar"><span style={{ width: `${pct(r.el[e.key], elTotal)}%`, background: e.color }} /></div>
               <bdi className="num">{pct(r.el[e.key], elTotal)}%</bdi></div>
           ))}
@@ -77,7 +78,7 @@ export function Quiz() {
         <div className="card">
           <div className="section-title"><h2>אופנים</h2><span className="label">איך אתה פועל</span></div>
           {MODES.map((m) => (
-            <div key={m.key} className="bar-row"><span><strong>{m.he}</strong></span>
+            <div key={m.key} className="bar-row"><span><ModeTag mo={m.key} /></span>
               <div className="bar"><span style={{ width: `${pct(r.mo[m.key], moTotal)}%`, background: 'var(--ink-2)' }} /></div>
               <bdi className="num">{pct(r.mo[m.key], moTotal)}%</bdi></div>
           ))}
