@@ -1,5 +1,6 @@
 import { SCENARIOS, SIGNS } from '../data/content';
 import { ELEMENTS, EL } from '../data/meta';
+import { Purpose } from '../components/Purpose';
 import { Glyph } from '../components/Glyph';
 import { IconNext, IconPrev, IconReset } from '../components/icons';
 import { Rich } from '../lib/rich';
@@ -30,6 +31,7 @@ export function Flex() {
         <h1>איזה מבנה הרגע הזה דורש?</h1>
         <Rich className="explain" text={'לא "מה הייתי עושה", אלא **מה המצב צריך**.\n==גמישות היא לבחור מבנה שאינו שלך, כשצריך.=='} />
       </header>
+      <Purpose why={'לתרגל **מעבר** למבנה שהמצב דורש, גם כשאינו שלך.'} how={'קוראים מצב מהחיים, ובוחרים **מבנה אחד** מתוך 12.'} get={'מד גמישות: כמה **יסודות** אתה יודע להפעיל.'} />
       <div className="flex-layout">
         <section className="card lift scenario rise" key={sc.id}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 8 }}>
@@ -44,7 +46,7 @@ export function Flex() {
           <div className="pickgrid" role="group" aria-label="בחירת מבנה">
             {ELEMENTS.map((e) => (
               <div key={e.key} className="pickcol">
-                <span className="label" style={{ color: e.color }}>{e.he}</span>
+                <span className="label"><span className="swatch" style={{ background: e.color }} />{e.he}</span>
                 {SIGNS.filter((s) => s.elc === e.key).map((s) => {
                   const state = pick ? (sc.best.includes(s.id) ? 'best' : sc.ok.includes(s.id) ? 'ok' : s.id === pick ? 'miss' : '') : '';
                   return (

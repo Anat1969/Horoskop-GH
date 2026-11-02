@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { Purpose } from '../components/Purpose';
 import { Wheel } from '../components/Wheel';
 import { IconPause, IconPlay, IconX } from '../components/icons';
 import { Rich } from '../lib/rich';
@@ -43,6 +44,7 @@ export function Sky({ route }: { route: Route }) {
         <h1>המזלות נשארו. הכוכבים זזו.</h1>
         <Rich className="explain" text={`ציר כדור הארץ מסתובב כמו סביבון, סיבוב אחד בכל **${Math.round(PRECESSION_CYCLE).toLocaleString('he-IL')}** שנה.\n==לכן תאריכי המזלות כבר לא תואמים את הכוכבים שמאחורי השמש.==`} />
       </header>
+      <Purpose why={'להבין מה המזל **מודד** באמת: עונה, לא כוכב.'} how={'מזיזים את **סרגל השנים**, או מפעילים את הזמן.'} get={'תשובה מדויקת לשאלה **למה התאריכים זזו**.'} />
 
       <section className="today-split">
         <div className="card lift today-box">

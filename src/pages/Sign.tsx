@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { SIGNS } from '../data/content';
 import { EL, MO } from '../data/meta';
+import { Purpose } from '../components/Purpose';
 import { Glyph } from '../components/Glyph';
 import { IconCopy, IconNext, IconPrev, IconX } from '../components/icons';
 import { Rich } from '../lib/rich';
@@ -52,11 +53,13 @@ export function SignPage({ id }: { id: string }) {
         <div className="sign-glyph"><Glyph sym={s.sym} color={c} size={120} /></div>
         <div style={{ display: 'grid', gap: 10, minWidth: 0 }}>
           <span className="label">{EL[s.elc].he} · {MO[s.mo].he} · {s.month}</span>
-          <h1>{s.n}<span className="en" style={{ color: '#9aa0c3' }}>{s.en}</span></h1>
+          <h1>{s.n}<span className="en">{s.en}</span></h1>
           <p className="sign-core">{s.core}</p>
-          <p style={{ color: '#cfd3ea' }}>{s.tip}</p>
+          <p className="explain">{s.tip}</p>
         </div>
       </header>
+
+      <Purpose why={'להכיר מבנה אחד **לעומק**: כוח, צל וכיוון צמיחה.'} how={'קוראים, עונים על **שאלת ההשתקפות**, ורושמים ביומן.'} get={'פעולה אחת להיום, וגשר אל מבנה **אחר**.'} />
 
       <div className="sign-body">
         <div className="sign-main">
@@ -68,6 +71,7 @@ export function SignPage({ id }: { id: string }) {
 
           <section>
             <div className="section-title"><h2>גשרים אל מבנים אחרים</h2><span className="label">כל גשר: הכלל, המשמעות, והפעולה</span></div>
+            <a href={'#/bond?a=' + s.id} className="press btn" style={{ marginBottom: 16 }}>ניתוח קשר עם כל מבנה אחר</a>
             <div className="bridges">
               {s.bridge.map((b) => {
                 const t = byName(b.to), r = relation(s, t);
@@ -75,7 +79,7 @@ export function SignPage({ id }: { id: string }) {
                   <div key={b.to} className="card bridge">
                     <div className="who">
                       <strong>{plain(s.n)}</strong><span className="arrow">← לומד מ ←</span>
-                      <a href={'#/sign/' + t.id} className="press-link" style={{ color: `var(--${t.elc})` }}><strong>{plain(t.n)}</strong></a>
+                      <a href={`#/bond?a=${s.id}&b=${t.id}`} className="press-link" title="ניתוח הקשר"><strong>{plain(t.n)}</strong></a>
                     </div>
                     <div className="label">{r.name} · {r.rule}</div>
                     <Rich text={r.meaning} className="src" />
@@ -87,7 +91,7 @@ export function SignPage({ id }: { id: string }) {
             <div className="easy">
               <span className="label">מדברים בקלות (אותו יסוד, או יסוד משלים):</span>
               {easy(s).map((o) => (
-                <a key={o.id} href={'#/sign/' + o.id} className="chip" style={{ textDecoration: 'none' }}>
+                <a key={o.id} href={`#/bond?a=${s.id}&b=${o.id}`} className="chip" style={{ textDecoration: 'none' }}>
                   <Glyph sym={o.sym} color={`var(--${o.elc})`} size={16} /> {plain(o.n)} <span className="src">{relation(s, o).deg}°</span>
                 </a>
               ))}
@@ -121,7 +125,7 @@ export function SignPage({ id }: { id: string }) {
           <div className="card lift summary">
             <span className="label">תקציר בפורמט קבוע</span>
             <dl>
-              <dt>יסוד</dt><dd style={{ color: c }}><strong>{EL[s.elc].he}</strong> · {EL[s.elc].verb}</dd>
+              <dt>יסוד</dt><dd><strong>{EL[s.elc].he}</strong> · {EL[s.elc].verb}</dd>
               <dt>אופן</dt><dd><strong>{MO[s.mo].he}</strong> <span className="src">{MO[s.mo].term}</span></dd>
               <dt>כוכב שולט</dt><dd><strong>{s.pl}</strong></dd>
               <dt>תאריכי המזל</dt><dd><strong>{s.trop}</strong></dd>

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Wheel } from '../components/Wheel';
+import { Purpose } from '../components/Purpose';
 import { ELEMENTS } from '../data/meta';
 import { Rich } from '../lib/rich';
 import { go } from '../lib/route';
@@ -37,13 +38,15 @@ export function Home() {
         </div>
       </section>
 
+      <Purpose why={'להכיר **12 דרכי פעולה**, במקום תווית אחת קבועה.'} how={'מתחילים **באבחון**, או לוחצים על מזל בגלגל.'} get={'מבנה מוביל, **קשרים** לאחרים, ותרגול גמישות.'} />
+
       <section aria-label="מקרא היסודות" onMouseLeave={() => setActEl(null)}>
         <div className="legend">
           {ELEMENTS.map((e) => (
             <div key={e.key} className={'legend-item' + (actEl === e.key ? ' on' : actEl ? ' off' : '')} style={{ borderColor: e.color }}
               onMouseEnter={() => setActEl(e.key)} onFocus={() => setActEl(e.key)} tabIndex={0}>
               <span className="label">{e.verb}</span>
-              <div><b style={{ color: e.color }}>{e.he}</b><span className="en">{e.en}</span></div>
+              <div><b>{e.he}</b><span className="en">{e.en}</span></div>
               <Rich text={e.line} className="src" />
             </div>
           ))}
@@ -57,11 +60,12 @@ export function Home() {
       </section>
 
       <section>
-        <div className="section-title"><h2>מפת התוכן</h2><span className="label">חמישה כלים, לולאה אחת: זיהוי, הבנה, תרגול</span></div>
+        <div className="section-title"><h2>מפת התוכן</h2><span className="label">שישה כלים, לולאה אחת: זיהוי, הבנה, קשר, תרגול</span></div>
         <div className="grid map-grid">
           {[
             ['atlas', '12', 'אטלס המבנים', 'מטריצה אחת של **4 יסודות × 3 אופנים** מסבירה את כולם.'],
             ['quiz', '12', 'אבחון עצמי', '**12 שאלות**, ומדד שמראה כמה הפרופיל שלך ברור.'],
+            ['bond', '66', 'קשרים', 'כל זוג מבנים הוא **זווית**. **66** זוגות, ומפה למעגל שלך.'],
             ['flex', '10', 'סימולטור גמישות', '**10 מצבים** מהחיים. איזה מבנה כל רגע דורש?'],
             ['sky', '30°', 'השמיים היום', 'הכוכבים זזו **מזל שלם** מאז שהמזלות נקבעו.'],
             ['read', '1,500', 'כתבה: מתחנה בשמיים לתחנה בנפש', 'מבית אלפא ועד יפו. **1,500 שנות** גלגל מזלות בארץ.'],

@@ -8,9 +8,10 @@ import { Quiz } from './pages/Quiz';
 import { Flex } from './pages/Flex';
 import { Sky } from './pages/Sky';
 import { Read } from './pages/Read';
+import { Bond } from './pages/Bond';
 import { byId } from './lib/relations';
 
-const TITLES: Record<string, string> = { home: 'מקדש הכוכבים', atlas: 'אטלס', quiz: 'אבחון עצמי', flex: 'סימולטור גמישות', sky: 'השמיים היום', read: 'כתבה' };
+const TITLES: Record<string, string> = { home: 'מקדש הכוכבים', atlas: 'אטלס', quiz: 'אבחון עצמי', flex: 'סימולטור גמישות', sky: 'השמיים היום', read: 'כתבה', bond: 'קשרים' };
 
 export function App() {
   const r = useRoute();
@@ -31,6 +32,7 @@ export function App() {
         {page === 'flex' && <Flex />}
         {page === 'sky' && <Sky route={r} />}
         {page === 'read' && <Read />}
+        {page === 'bond' && <Bond route={r} />}
       </main>
       <footer className="footer">
         <span>מקדש הכוכבים · 12 מבנים, אף אחד מהם אינו גורל.</span>

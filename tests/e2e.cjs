@@ -16,7 +16,7 @@ const ok = (c, m) => { console.log((c ? 'PASS ' : 'FAIL ') + m); if (!c) fails++
     ok(!(await p.locator('header >> text=העתקת קישור').first().isVisible().catch(() => false)), `${tag}: no loose dev buttons in the bar`);
     ok((await p.locator('html').getAttribute('dir')) === 'rtl', `${tag}: RTL`);
     // ניווט בכל הדפים, בלי גלילה אופקית
-    for (const pg of ['atlas', 'sign/leo', 'quiz', 'flex', 'sky', 'read', '']) {
+    for (const pg of ['atlas', 'sign/leo', 'quiz', 'bond', 'flex', 'sky', 'read', '']) {
       await p.goto(BASE + '#/' + pg); await p.waitForTimeout(400);
       const ow = await p.evaluate(() => document.documentElement.scrollWidth - innerWidth);
       ok(ow <= 0, `${tag}: no horizontal scroll on #/${pg}`);
@@ -49,6 +49,32 @@ const ok = (c, m) => { console.log((c ? 'PASS ' : 'FAIL ') + m); if (!c) fails++
     ok(await p.getByText('המבנה המוביל שלך').isVisible(), `${tag}: quiz yields a result`);
     ok(await p.getByText('כמה הפרופיל אמין?').isVisible(), `${tag}: reliability metrics shown`);
     ok((await p.locator('.result-hero h1').textContent()).includes('טָלֶה'), `${tag}: all-fire answers yield Aries`);
+    // מטרת הדף בכל דף
+    for (const pg of ['', 'atlas', 'sign/leo', 'bond', 'flex', 'sky', 'read']) {
+      await p.goto(BASE + '#/' + pg); await p.waitForTimeout(250);
+      ok(await p.getByRole('region', { name: 'מטרת הדף' }).isVisible(), `${tag}: purpose block on #/${pg}`);
+    }
+    // קשרים: זוג
+    await p.goto(BASE + '#/bond?a=aries&b=libra'); await p.waitForTimeout(300);
+    ok((await p.locator('.bond-mid').textContent()).includes('ניגוד'), `${tag}: Aries-Libra is an opposition`);
+    await p.getByRole('group', { name: /צד ב/ }).getByRole('button', { name: 'אריה' }).click();
+    ok((await p.locator('.bond-mid').textContent()).includes('משולש'), `${tag}: Aries-Leo is a trine`);
+    ok(await p.locator('.tone-insight', { hasText: 'תרגול משותף' }).isVisible(), `${tag}: joint practice shown`);
+    // קשרים: מעגל
+    for (const [n, sg] of [['דנה', 'aries'], ['יואב', 'cancer'], ['מיכל', 'libra']]) {
+      await p.fill('#pn', n); await p.selectOption('#ps', sg); await p.getByRole('button', { name: 'הוספה למעגל' }).click();
+    }
+    ok(await p.locator('.pair').count() === 3, `${tag}: circle of 3 yields 3 pairs`);
+    ok(await p.locator('.tone-problem', { hasText: 'מה חסר בקבוצה' }).isVisible(), `${tag}: missing elements reported`);
+    await p.locator('.pair').first().click(); await p.waitForTimeout(200);
+    ok(decodeURIComponent(p.url()).includes('an='), `${tag}: clicking a pair loads it with names`);
+    await p.reload(); await p.waitForTimeout(300);
+    ok(await p.locator('.person').count() === 3, `${tag}: circle persists after reload`);
+    // לחיצה על מזל בגלגל: בלי מסגרת ריבוע
+    await p.goto(BASE + '#/'); await p.waitForTimeout(300);
+    const g = p.locator('.hero-wheel g[role=button]').first();
+    await g.focus();
+    ok((await g.evaluate((e) => getComputedStyle(e).outlineStyle)) === 'none', `${tag}: no square outline on wheel sign`);
     // גמישות
     await p.goto(BASE + '#/flex'); await p.waitForTimeout(300);
     await p.locator('.pick', { hasText: 'סרטן' }).click();

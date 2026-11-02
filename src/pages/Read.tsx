@@ -1,3 +1,4 @@
+import { Purpose } from '../components/Purpose';
 import { Mosaic } from '../components/Mosaic';
 import { CopyButton } from '../components/CopyButton';
 import { IconCopy, IconPrint } from '../components/icons';
@@ -25,9 +26,11 @@ export function Read() {
           <span className="label">כתבה · ידע · כ-6 דקות קריאה</span>
           <h1>מזל: מתחנה בשמיים<br />לתחנה בנפש</h1>
           <p className="deck">איך גלגל של 12 עבר מבבל, דרך רצפת בית כנסת בעמק, אל סמטאות יפו ואל השאלה מי אנחנו.</p>
-          <span className="src" style={{ color: '#cfd3ea' }}>איור בהשראת פסיפס בית אלפא, נבנה בקוד. לא צילום.</span>
+          <span className="src">איור בהשראת פסיפס בית אלפא, נבנה בקוד. לא צילום.</span>
         </div>
       </header>
+
+      <Purpose why={'להעמיק ב**היסטוריה** של המזלות בארץ ובשפה.'} how={'קוראים, ומעתיקים **פוסט** מוכן לשיתוף.'} get={'הקשר תרבותי: **מתחנה בשמיים** לתחנה בנפש.'} />
 
       <div className="feature-body">
         <blockquote className="epigraph">

@@ -14,15 +14,11 @@ export const IconSearch = () => <svg viewBox="0 0 24 24" {...P} aria-hidden="tru
 export function AppMark({ size = 34 }: { size?: number }) {
   return (
     <svg viewBox="0 0 64 64" width={size} height={size} aria-hidden="true">
-      <defs>
-        <radialGradient id="am-b" cx="35%" cy="30%"><stop offset="0" stopColor="#f1d38a" /><stop offset="1" stopColor="#a8822f" /></radialGradient>
-      </defs>
-      <circle cx="32" cy="32" r="30" fill="#0c1128" />
-      <circle cx="32" cy="32" r="26" fill="none" stroke="url(#am-b)" strokeWidth="3" />
-      <circle cx="32" cy="32" r="17" fill="none" stroke="#d8b25a" strokeWidth="1" strokeDasharray="2 3" />
-      <ellipse cx="32" cy="36" rx="17" ry="9" fill="none" stroke="#d8b25a" strokeWidth="1.5" transform="rotate(-23.4 32 32)" />
-      <path d="M32 6v52M6 32h52" stroke="#d8b25a" strokeWidth=".8" opacity=".6" />
-      <circle cx="44" cy="27" r="3.4" fill="#ffe36b" />
+      <circle cx="32" cy="32" r="30" fill="#fff" stroke="#111" strokeWidth="1.5" />
+      <circle cx="32" cy="32" r="22" fill="none" stroke="#111" strokeWidth="1" />
+      <ellipse cx="32" cy="34" rx="22" ry="11" fill="none" stroke="#111" strokeWidth="1" transform="rotate(-23.4 32 32)" />
+      <path d="M32 2v60M2 32h60" stroke="#111" strokeWidth=".6" opacity=".5" />
+      <circle cx="47" cy="25" r="4" fill="#111" />
     </svg>
   );
 }

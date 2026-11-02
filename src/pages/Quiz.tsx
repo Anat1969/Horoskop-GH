@@ -1,5 +1,6 @@
 import { QUIZ } from '../data/content';
 import { ELEMENTS, MODES } from '../data/meta';
+import { Purpose } from '../components/Purpose';
 import { Glyph } from '../components/Glyph';
 import { Rich } from '../lib/rich';
 import { go } from '../lib/route';
@@ -31,6 +32,7 @@ export function Quiz() {
           <h1 key={step} className="rise">{q.q}</h1>
           <p className="explain">בחרו את התשובה הראשונה שמרגישה נכונה. אין תשובה טובה או רעה.</p>
         </header>
+        {step === 0 && <Purpose why={'לזהות את **המבנה המוביל** שלך, ועד כמה הוא בולט.'} how={'עונים על **12 שאלות**. התשובה הראשונה שמרגישה נכונה.'} get={'דירוג של **12 המבנים**, ומדד אמינות שמסביר את עצמו.'} />}
         <div className="answers" key={'a' + step}>
           {q.opts.map((o, k) => (
             <button key={k} className="press answer rise" style={{ animationDelay: `${k * 60}ms` }} aria-pressed={ans[step] === k} onClick={() => choose(k)}>
@@ -57,9 +59,9 @@ export function Quiz() {
         <div className="sign-glyph"><Glyph sym={top.sym} color={`var(--${top.elc})`} size={96} /></div>
         <div style={{ display: 'grid', gap: 8, minWidth: 0 }}>
           <span className="label">המבנה המוביל שלך</span>
-          <h1 style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(40px,5vw,68px)', color: '#fff' }}>{top.n}</h1>
+          <h1 style={{ fontSize: 'clamp(44px,5.5vw,76px)', fontWeight: 100 }}>{top.n}</h1>
           <p className="sign-core">{top.core}</p>
-          <div className="cta"><button className="press btn btn-brass" onClick={() => go('sign/' + top.id)}>לדף המבנה</button><button className="press btn" onClick={() => go('flex')}>לתרגול גמישות</button></div>
+          <div className="cta"><button className="press btn btn-brass" onClick={() => go('sign/' + top.id)}>לדף המבנה</button><button className="press btn" onClick={() => go('bond?a=' + top.id)}>הקשרים שלי</button><button className="press btn" onClick={() => go('flex')}>לתרגול גמישות</button></div>
         </div>
       </header>
 
@@ -92,7 +94,7 @@ export function Quiz() {
               <a key={x.id} href={'#/sign/' + s.id} className="press card rank" style={{ textDecoration: 'none', borderTop: `4px solid var(--${s.elc})` }}>
                 <span className="label">מקום <bdi className="num">{k + 1}</bdi></span>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span style={{ fontFamily: 'var(--serif)', fontSize: 28, fontWeight: 700 }}><Glyph sym={s.sym} color={`var(--${s.elc})`} size={24} /> {s.n}</span>
+                  <span style={{ fontSize: 28, fontWeight: 300 }}><Glyph sym={s.sym} color={`var(--${s.elc})`} size={24} /> {s.n}</span>
                   <bdi className="num" style={{ fontSize: 24 }}>{x.score}</bdi>
                 </div>
               </a>
