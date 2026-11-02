@@ -1,6 +1,6 @@
 # מקדש הכוכבים
 
-**[לאפליקציה החיה: horoskop-gh.vercel.app](https://horoskop-gh.vercel.app)**
+**[לאפליקציה החיה: mikdash-kochavim.vercel.app](https://mikdash-kochavim.vercel.app)**
 
 קישור למיזוג האחרון, בלי Vercel: https://raw.githack.com/Anat1969/Horoskop-GH/main/app/index.html
 (אם מופיע דף ביניים "One more step", לוחצים פעם אחת "Open the page".)
