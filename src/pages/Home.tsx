@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { Wheel } from '../components/Wheel';
 import { Purpose } from '../components/Purpose';
 import { ELEMENTS } from '../data/meta';
+import { Hint, elIcon } from '../components/Grammar';
+import { Icon } from '../components/Icon';
 import { Rich } from '../lib/rich';
 import { go } from '../lib/route';
 import { byId } from '../lib/relations';
@@ -35,6 +37,7 @@ export function Home() {
         </div>
         <div className="hero-wheel rise" style={{ animationDelay: '120ms' }}>
           <Wheel onPick={(id) => go('sign/' + id)} activeEl={actEl} spin />
+          <Hint>לחיצה על מזל פותחת את דף המבנה · הנקודה השחורה: השמש היום · טבעת פנימית: הכוכבים עצמם</Hint>
         </div>
       </section>
 
@@ -46,7 +49,7 @@ export function Home() {
             <div key={e.key} className={'legend-item' + (actEl === e.key ? ' on' : actEl ? ' off' : '')} style={{ borderColor: e.color }}
               onMouseEnter={() => setActEl(e.key)} onFocus={() => setActEl(e.key)} tabIndex={0}>
               <span className="label">{e.verb}</span>
-              <div><b>{e.he}</b><span className="en">{e.en}</span></div>
+              <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}><Icon n={elIcon(e.key)} size={22} color={e.color} /><b>{e.he}</b><span className="en">{e.en}</span></div>
               <Rich text={e.line} className="src" />
             </div>
           ))}
@@ -60,7 +63,7 @@ export function Home() {
       </section>
 
       <section>
-        <div className="section-title"><h2>מפת התוכן</h2><span className="label">שישה כלים, לולאה אחת: זיהוי, הבנה, קשר, תרגול</span></div>
+        <div className="section-title"><h2>מפת התוכן</h2><span className="label">שמונה כלים, לולאה אחת: זיהוי, הבנה, קשר, תרגול</span></div>
         <div className="grid map-grid">
           {[
             ['atlas', '12', 'אטלס המבנים', 'מטריצה אחת של **4 יסודות × 3 אופנים** מסבירה את כולם.'],
@@ -68,10 +71,12 @@ export function Home() {
             ['bond', '66', 'קשרים', 'כל זוג מבנים הוא **זווית**. **66** זוגות, ומפה למעגל שלך.'],
             ['flex', '10', 'סימולטור גמישות', '**10 מצבים** מהחיים. איזה מבנה כל רגע דורש?'],
             ['sky', '30°', 'השמיים היום', 'הכוכבים זזו **מזל שלם** מאז שהמזלות נקבעו.'],
+            ['cultures', '9', 'תרבויות', 'אותו גלגל, **9** תרבויות, ומה כל אחת **מודדת** בו.'],
             ['read', '1,500', 'כתבה: מתחנה בשמיים לתחנה בנפש', 'מבית אלפא ועד יפו. **1,500 שנות** גלגל מזלות בארץ.'],
+            ['key', '14', 'מקרא: איך לקרוא את האפליקציה', '**14** פורמטים קבועים, ואייקון לכל רעיון.'],
           ].map(([p, n, t, l], i) => (
             <a key={p} href={'#/' + p} className="press map-card card rise" style={{ animationDelay: `${i * 60}ms` }}>
-              <span className="big">{n}</span><h3>{t}</h3><Rich text={l} className="src" />
+              <span className="map-top"><span className="big">{n}</span><Icon n={p as never} size={26} color="var(--g-400)" /></span><h3>{t}</h3><Rich text={l} className="src" />
             </a>
           ))}
         </div>

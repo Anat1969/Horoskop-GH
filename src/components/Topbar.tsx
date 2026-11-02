@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
 import { AppMark } from './icons';
+import { Icon, type IconName } from './Icon';
 import { go } from '../lib/route';
 import { search } from '../lib/search';
 import { Glyph } from './Glyph';
 import { load, save } from '../lib/store';
 
-const LINKS: [string, string][] = [['atlas', 'אטלס'], ['quiz', 'אבחון'], ['bond', 'קשרים'], ['flex', 'גמישות'], ['sky', 'השמיים'], ['read', 'כתבה']];
+const LINKS: [IconName, string][] = [['atlas', 'אטלס'], ['quiz', 'אבחון'], ['bond', 'קשרים'], ['flex', 'גמישות'], ['sky', 'שמיים'], ['cultures', 'תרבויות'], ['read', 'כתבה']];
 
 export function Topbar({ page }: { page: string }) {
   const [q, setQ] = useState(() => load('q', ''));
@@ -29,7 +30,7 @@ export function Topbar({ page }: { page: string }) {
         </a>
         <div className="nav-wrap">
           <nav className="nav" aria-label="ניווט ראשי">
-            {LINKS.map(([p, t]) => <a key={p} href={'#/' + p} aria-current={page === p || (p === 'atlas' && page === 'sign') ? 'page' : undefined}>{t}</a>)}
+            {LINKS.map(([p, t]) => <a key={p} href={'#/' + p} aria-current={page === p || (p === 'atlas' && page === 'sign') ? 'page' : undefined}><Icon n={p} size={17} />{t}</a>)}
           </nav>
         </div>
         <span className="spacer" />

@@ -3,10 +3,13 @@ import { SIGNS } from '../data/content';
 import { EL, MO } from '../data/meta';
 import { Purpose } from '../components/Purpose';
 import { Glyph } from '../components/Glyph';
+import { HarmonyKey, RelBars, RelRadial } from '../components/RelViz';
+import { ElTag, Hint, ModeTag } from '../components/Grammar';
+import { ASPECT_ICON, Icon } from '../components/Icon';
 import { IconCopy, IconNext, IconPrev, IconX } from '../components/icons';
 import { Rich } from '../lib/rich';
 import { go } from '../lib/route';
-import { byId, byName, easy, relation } from '../lib/relations';
+import { byId, byName, harmonyColor, metrics, relation } from '../lib/relations';
 import { useStored } from '../lib/store';
 import { CopyButton } from '../components/CopyButton';
 
@@ -43,16 +46,17 @@ export function SignPage({ id }: { id: string }) {
   return (
     <article className="sign" style={{ ['--c' as string]: c }} key={s.id}>
       <div className="ops no-print" role="toolbar" aria-label="ניווט בין המבנים">
-        <button className="press icon-btn" title={'הקודם: ' + plain(prev.n)} aria-label={'הקודם: ' + plain(prev.n)} onClick={() => go('sign/' + prev.id)}><IconPrev /></button>
+        <Hint>מקשי החצים: המבנה הקודם והבא · Esc: חזרה לאטלס</Hint>
+        <button className="press icon-btn" data-tip={'הקודם: ' + plain(prev.n)} aria-label={'הקודם: ' + plain(prev.n)} onClick={() => go('sign/' + prev.id)}><IconPrev /></button>
         <span className="label"><bdi className="num">{i + 1}</bdi> / <bdi className="num">12</bdi></span>
-        <button className="press icon-btn" title={'הבא: ' + plain(next.n)} aria-label={'הבא: ' + plain(next.n)} onClick={() => go('sign/' + next.id)}><IconNext /></button>
-        <button className="press icon-btn" title="חזרה לאטלס" aria-label="חזרה לאטלס" onClick={() => go('atlas')}><IconX /></button>
+        <button className="press icon-btn" data-tip={'הבא: ' + plain(next.n)} aria-label={'הבא: ' + plain(next.n)} onClick={() => go('sign/' + next.id)}><IconNext /></button>
+        <button className="press icon-btn" data-tip="סגירה וחזרה לאטלס" aria-label="חזרה לאטלס" onClick={() => go('atlas')}><IconX /></button>
       </div>
 
       <header className="sign-hero sky rise">
         <div className="sign-glyph"><Glyph sym={s.sym} color={c} size={120} /></div>
         <div style={{ display: 'grid', gap: 10, minWidth: 0 }}>
-          <span className="label">{EL[s.elc].he} · {MO[s.mo].he} · {s.month}</span>
+          <span className="hero-tags"><ElTag el={s.elc} /><ModeTag mo={s.mo} /><span className="tag"><Icon n="time" size={16} color="var(--g-600)" />{s.month}</span></span>
           <h1>{s.n}<span className="en">{s.en}</span></h1>
           <p className="sign-core">{s.core}</p>
           <p className="explain">{s.tip}</p>
@@ -81,26 +85,26 @@ export function SignPage({ id }: { id: string }) {
                       <strong>{plain(s.n)}</strong><span className="arrow">← לומד מ ←</span>
                       <a href={`#/bond?a=${s.id}&b=${t.id}`} className="press-link" title="ניתוח הקשר"><strong>{plain(t.n)}</strong></a>
                     </div>
-                    <div className="label">{r.name} · {r.rule}</div>
+                    <div className="label" style={{ display: 'flex', gap: 6, alignItems: 'center' }}><Icon n={ASPECT_ICON[r.deg]} size={16} color={harmonyColor(metrics(s, t).harmony)} />{r.name} · {r.rule}</div>
                     <Rich text={r.meaning} className="src" />
-                    <div className="tone tone-solution" style={{ marginTop: 8 }}><h3>פעולה להיום</h3><p>{b.advice}</p></div>
+                    <div className="tone tone-action" style={{ marginTop: 8 }}><h3>פעולה להיום</h3><p>{b.advice}</p></div>
                   </div>
                 );
               })}
             </div>
-            <div className="easy">
-              <span className="label">מדברים בקלות (אותו יסוד, או יסוד משלים):</span>
-              {easy(s).map((o) => (
-                <a key={o.id} href={`#/bond?a=${s.id}&b=${o.id}`} className="chip" style={{ textDecoration: 'none' }}>
-                  <Glyph sym={o.sym} color={`var(--${o.elc})`} size={16} /> {plain(o.n)} <span className="src">{relation(s, o).deg}°</span>
-                </a>
-              ))}
+          </section>
+
+          <section className="card">
+            <div className="section-title"><h2>{plain(s.n)} מול כל המזלות</h2><span className="label">צבע: טיב · עובי: עוצמה</span></div>
+            <div className="all-rel">
+              <RelRadial a={s} onPick={(id) => go(`bond?a=${s.id}&b=${id}`)} />
+              <div><RelBars a={s} onPick={(id) => go(`bond?a=${s.id}&b=${id}`)} /><HarmonyKey /><Hint>לחיצה על מזל או על שורה פותחת ניתוח מלא של הקשר.</Hint></div>
             </div>
           </section>
 
           <section className="duo">
-            <div className="card sky"><span className="label">בשמיים</span><Rich text={s.sci} /></div>
-            <div className="card sky"><span className="label">במיתוס</span><Rich text={s.myth} /></div>
+            <div className="card sky"><span className="label"><Icon n="sky" size={14} /> בשמיים</span><Rich text={s.sci} /></div>
+            <div className="card sky"><span className="label"><Icon n="read" size={14} /> במיתוס</span><Rich text={s.myth} /></div>
           </section>
 
           <section className="card loop">
@@ -125,8 +129,8 @@ export function SignPage({ id }: { id: string }) {
           <div className="card lift summary">
             <span className="label">תקציר בפורמט קבוע</span>
             <dl>
-              <dt>יסוד</dt><dd><strong>{EL[s.elc].he}</strong> · {EL[s.elc].verb}</dd>
-              <dt>אופן</dt><dd><strong>{MO[s.mo].he}</strong> <span className="src">{MO[s.mo].term}</span></dd>
+              <dt>יסוד</dt><dd><strong><ElTag el={s.elc} /></strong> · {EL[s.elc].verb}</dd>
+              <dt>אופן</dt><dd><strong><ModeTag mo={s.mo} /></strong> <span className="src">{MO[s.mo].term}</span></dd>
               <dt>כוכב שולט</dt><dd><strong>{s.pl}</strong></dd>
               <dt>תאריכי המזל</dt><dd><strong>{s.trop}</strong></dd>
               <dt>השמש בקבוצה עצמה</dt><dd><strong>{s.astro}</strong> <a href="#/sky" className="src">למה שונה?</a></dd>
@@ -135,7 +139,7 @@ export function SignPage({ id }: { id: string }) {
             </dl>
           </div>
           <div className="card haiku">
-            <span className="label">הייקו</span>
+            <span className="label"><Icon n="insight" size={14} /> הייקו</span>
             <p className="haiku-lines">{s.haiku.map((l) => <span key={l}>{l}</span>)}</p>
             <p className="src">{s.hk}</p>
           </div>

@@ -1,4 +1,4 @@
-/* תעודת DNA: אסטרולב מפליז על נייר לילה. ראו CLAUDE.md */
+/* תעודת DNA: אסטרולב בקו דיו על נייר לבן, וצבע לכל יסוד. ראו CLAUDE.md */
 :root {
   /* לבן, סולם אפורים ושחור */
   --white: #ffffff;
@@ -24,12 +24,15 @@
   --brass-2: var(--g-600);
   --night: var(--g-100);
   --night-2: var(--white);
-  /* ארבעת היסודות: ארבעה ערכי אפור, מהכבד לקל */
-  --fire: #1c1c1c;
-  --earth: #555555;
-  --air: #8f8f8f;
-  --water: #c2c2c2;
-  --fire-on: #fff; --earth-on: #fff; --air-on: #111; --water-on: #111;
+  /* ארבעת היסודות: הצבע היחיד שמקודד נושא, על בסיס מונוכרומטי */
+  --fire: #e0542a;   /* אלמוג־גחלת */
+  --earth: #c08a2e;  /* אוכרה */
+  --air: #3d86cc;    /* תכלת־רקיע */
+  --water: #11897d;  /* טורקיז */
+  --fire-on: #fff; --earth-on: #111; --air-on: #fff; --water-on: #fff;
+  --fire-soft: #fdeee8; --earth-soft: #f8f0e1; --air-soft: #eaf2fa; --water-soft: #e5f3f1;
+  /* סקאלת טיב הקשר: שלילי, ניטרלי, חיובי */
+  --neg: #c2412d; --neg-2: #e9a294; --zero: #cfcfcf; --pos-2: #8fc7a6; --pos: #2e7d4f;
   /* צבעי משמעות: הכלל הקבוע של השפה */
   --problem: #b3261e;
   --problem-bg: #fdf1f0;
@@ -186,7 +189,7 @@ main { max-width: var(--max); margin: 0 auto; padding: 32px 24px 64px; display: 
 
 /* ---------- כרטיס מבנה ---------- */
 .sign-card { display: grid; gap: 8px; padding: 18px 18px 14px; text-decoration: none; border-top: 4px solid var(--c); background:
-  linear-gradient(180deg, color-mix(in srgb, var(--c) 9%, var(--card)), var(--card) 60%); min-width: 0; }
+  linear-gradient(180deg, color-mix(in srgb, var(--c) 10%, var(--card)), var(--card) 55%); min-width: 0; }
 .sc-top { display: flex; justify-content: space-between; align-items: center; }
 .sign-card h3 { font-size: 28px; font-weight: 300; color: var(--ink); }
 .sc-core { color: var(--ink-2); font-size: 15px; min-height: 3.2em; }
@@ -408,3 +411,132 @@ svg [role='button']:focus-visible path:first-child { stroke: var(--black); strok
 @media (max-width: 900px) { .map-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 520px) { .map-grid { grid-template-columns: minmax(0, 1fr); } }
 .who strong, .bond-title strong { font-weight: 400; }
+
+/* ---------- דקדוק חזותי ---------- */
+.ico { vertical-align: -3px; }
+.tag { display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; }
+.param { display: grid; gap: 2px; }
+.param .label { display: inline-flex; gap: 4px; align-items: center; }
+.param-v { font-size: 18px; font-weight: 500; }
+.g-quote { margin: 0; display: grid; gap: 6px; padding-inline-start: 16px; border-inline-start: 1px solid var(--g-300); }
+.g-quote blockquote { margin: 0; font-size: clamp(22px, 2.6vw, 32px); font-weight: 200; line-height: 1.4; }
+.hint { display: flex; gap: 6px; align-items: center; font-size: 13px; color: var(--g-600); margin: 4px 0 0; }
+.hint .ico { color: var(--g-400); }
+.trend { display: inline-flex; gap: 3px; align-items: center; font-weight: 500; }
+.trend.up { color: var(--pos); } .trend.down { color: var(--neg); }
+.opp { display: inline-flex; gap: 8px; align-items: center; }
+.steps { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; counter-reset: s; position: relative; }
+.steps li { display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 10px; align-items: start; }
+.step-n { width: 28px; height: 28px; display: grid; place-items: center; border: 1px solid var(--black); font-size: 13px; border-radius: 50%; background: var(--white); }
+
+/* אייקון לכל סוג קופסה, אוטומטית */
+.tone h3 { display: flex; align-items: center; gap: 6px; }
+.tone h3::before { content: ''; width: 15px; height: 15px; flex: 0 0 auto; background: currentColor; -webkit-mask: var(--ti) center / contain no-repeat; mask: var(--ti) center / contain no-repeat; }
+.tone-problem { --ti: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 4l9 15H3z M12 10v4 M12 16.6v.4'/%3E%3C/svg%3E"); }
+.tone-solution { --ti: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='8.5'/%3E%3Cpath d='M8 12.2l2.8 2.8L16 9.2'/%3E%3C/svg%3E"); }
+.tone-insight { --ti: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linejoin='round'%3E%3Cpath d='M12 3l1.8 7.2L21 12l-7.2 1.8L12 21l-1.8-7.2L3 12l7.2-1.8z'/%3E%3C/svg%3E"); }
+.tone-neutral { --ti: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='12' cy='12' r='8.5'/%3E%3Cpath d='M12 11v5.5 M12 7.6v.4'/%3E%3C/svg%3E"); }
+.tone-action { background: var(--g-50); border-color: var(--black); --ti: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linejoin='round'%3E%3Cpath d='M13 3L5 14h6l-1 7 8-11h-6z'/%3E%3C/svg%3E"); }
+.tone-action h3 { color: var(--black); }
+
+/* כפתורים חבויים: תווית בריחוף ובפוקוס */
+[data-tip] { position: relative; }
+[data-tip]:hover::after, [data-tip]:focus-visible::after {
+  content: attr(data-tip); position: absolute; top: calc(100% + 6px); left: 50%; transform: translateX(-50%);
+  background: var(--black); color: var(--white); font: 400 12px/1.4 var(--sans); padding: 5px 9px; width: max-content; max-width: 220px;
+  z-index: 80; pointer-events: none; text-align: center; box-shadow: var(--shadow-2);
+}
+
+/* ---------- ויזואליזציית קשרים ---------- */
+.hkey { display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: center; font-size: 13px; color: var(--ink-2); }
+.hkey span { display: inline-flex; gap: 6px; align-items: center; }
+.hkey i { width: 22px; height: 8px; display: inline-block; }
+.relbars { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+.relbars-head, .relbar-row { display: grid; grid-template-columns: 110px minmax(0, 1fr) 120px 52px; gap: 12px; align-items: center; }
+.relbars-head { padding: 0 8px; }
+.relbar-row { width: 100%; border: 0; background: none; padding: 7px 8px; font: inherit; text-align: right; cursor: pointer; transition: background .15s; }
+.relbar-row:hover, .relbar-row:focus-visible { background: var(--g-100); }
+.rb-name { white-space: nowrap; }
+.rb-track, .div-track { position: relative; height: 12px; background: var(--g-100); }
+.rb-axis { position: absolute; left: 50%; top: -3px; bottom: -3px; width: 1px; background: var(--g-500); }
+.rb-bar { position: absolute; top: 0; bottom: 0; animation: grow .7s cubic-bezier(.2,.7,.2,1) both; }
+.rb-asp { display: inline-flex; gap: 6px; align-items: center; font-size: 14px; color: var(--ink-2); }
+.rb-int, .dots { display: inline-flex; gap: 3px; }
+.rb-int i, .dots i { width: 8px; height: 8px; border-radius: 50%; border: 1px solid var(--g-400); display: inline-block; }
+.rb-int i.on { background: var(--black); border-color: var(--black); }
+.matrix-wrap { overflow-x: auto; }
+.relmatrix { border-collapse: separate; border-spacing: 2px; margin: 0 auto; }
+.relmatrix th { font-weight: 400; font-size: 13px; padding: 2px 6px; white-space: nowrap; color: var(--ink-2); transition: background .15s; }
+.relmatrix th.on { background: var(--g-150); color: var(--ink); }
+.relmatrix td { padding: 0; }
+.rm-cell, .rm-self { width: 34px; height: 34px; display: grid; place-items: center; border: 0; padding: 0; cursor: pointer; transition: transform .12s, box-shadow .12s, opacity .12s; }
+.rm-self { opacity: .35; cursor: default; }
+.rm-cell:hover { transform: scale(1.15); box-shadow: var(--shadow-2); position: relative; z-index: 2; }
+.rm-cell.sel { outline: 2px solid var(--black); outline-offset: 1px; }
+.relmatrix:hover .rm-cell:not(.hl) { opacity: .45; }
+.meters { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.meter { display: grid; gap: 6px; align-content: start; padding: 12px; background: var(--g-50); border-top: 1px solid var(--black); }
+.sim { display: flex; gap: 6px; flex-wrap: wrap; }
+.sim span { display: inline-flex; gap: 4px; align-items: center; padding: 2px 8px; font-size: 13px; color: var(--g-500); background: var(--white); border: 1px dashed var(--g-300); }
+.sim span.on { color: var(--ink); border: 1px solid var(--black); }
+@media (max-width: 700px) {
+  .relbars-head, .relbar-row { grid-template-columns: 84px minmax(0, 1fr) 40px; }
+  .rb-asp { display: none; }
+  .meters { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .rm-cell, .rm-self { width: 24px; height: 24px; }
+  .rm-name { display: none; }
+}
+.all-rel { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: 24px; align-items: center; }
+.bond-mid .ico { justify-self: center; }
+@media (max-width: 1000px) { .all-rel { grid-template-columns: minmax(0, 1fr); } }
+.hero-tags, .sc-tags { display: inline-flex; gap: 12px; flex-wrap: wrap; color: var(--ink-2); }
+.hero-tags { font-size: 15px; }
+.ops .hint { margin: 0 0 0 auto; }
+.hero-tags, .sc-tags { display: inline-flex; gap: 12px; flex-wrap: wrap; color: var(--ink-2); }
+.hero-tags { font-size: 15px; }
+.ops .hint { margin: 0 0 0 auto; }
+.nav a { display: inline-flex; gap: 6px; align-items: center; }
+.nav a .ico { color: var(--g-500); }
+.nav a[aria-current='page'] .ico { color: var(--ink); }
+.map-top { display: flex; justify-content: space-between; align-items: flex-start; }
+.el-dots span { display: inline-flex; gap: 4px; align-items: center; }
+.el-dots span.on .ico { color: #fff !important; }
+@media (max-width: 900px) {
+  .nav a { flex-direction: column; gap: 2px; font-size: 11px; padding: 8px 2px; }
+  .nav { gap: 0; }
+}
+
+/* ---------- תרבויות ---------- */
+.culture-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.culture { display: grid; gap: 12px; align-content: start; transition: box-shadow .2s, transform .2s; }
+.culture.on { box-shadow: var(--shadow-2); transform: translateY(-2px); border-color: var(--black); }
+.culture-head { display: flex; gap: 10px; align-items: center; }
+.culture-head h3 { font-size: 24px; font-weight: 300; }
+.culture-params { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; padding-bottom: 10px; border-bottom: 1px solid var(--g-200); }
+.culture .param-v { font-size: 15px; font-weight: 400; }
+.culture-insight { display: flex; gap: 6px; align-items: baseline; font-size: 16px; }
+.cmp td { vertical-align: top; }
+.cmp td:last-child { display: table-cell; }
+.names td { vertical-align: top; }
+.names td:last-child { display: table-cell; }
+.names td > span:not(.glyph) { display: block; }
+.names .mono-s { font-family: var(--mono); font-size: 12px; }
+.names tr.mark-row td { background: var(--insight-bg); }
+[lang='el'], [lang='ar'], [lang='sa'] { font-size: 17px; }
+@media (max-width: 1100px) { .culture-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 700px) { .culture-grid, .culture-params { grid-template-columns: minmax(0, 1fr); } }
+
+/* ---------- מקרא ---------- */
+.key-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.key-grid .card { display: grid; gap: 10px; align-content: start; }
+.key-row { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; }
+.key-chip { display: inline-flex; gap: 6px; align-items: center; }
+.key-chip i { width: 18px; height: 18px; display: inline-block; box-shadow: inset 0 0 0 1px rgba(0,0,0,.12); }
+.key-ico { display: inline-grid; justify-items: center; gap: 2px; font-size: 13px; min-width: 56px; }
+.formats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 32px; }
+.format { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: 16px; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--g-200); }
+.format-ex { min-width: 0; }
+.hidden-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 32px; }
+.hidden-item { display: grid; grid-template-columns: 30px minmax(0, 1fr); gap: 10px; align-items: start; }
+@media (max-width: 900px) { .key-grid, .formats, .hidden-list { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 700px) { .ops .hint { display: none; } }

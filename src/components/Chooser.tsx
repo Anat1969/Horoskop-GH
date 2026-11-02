@@ -1,5 +1,6 @@
+import type { ReactNode } from 'react';
 // בורר אחיד: "הכול" מאפס, כל לחיצה מחליפה, "+" מוסיף ו"−" מסיר. לחיצה על הבחירה היחידה מחזירה ל"הכול".
-export interface Opt { key: string; label: string; color?: string }
+export interface Opt { key: string; label: string; color?: string; icon?: ReactNode }
 export function Chooser({ label, opts, value, onChange }: { label: string; opts: Opt[]; value: string[]; onChange: (v: string[]) => void }) {
   const all = value.length === 0;
   return (
@@ -10,12 +11,12 @@ export function Chooser({ label, opts, value, onChange }: { label: string; opts:
         const on = value.includes(o.key);
         return (
           <span className="chip-group" key={o.key}>
-            <button className="chip" aria-pressed={on} onClick={() => onChange(on && value.length === 1 ? [] : [o.key])}>
-              {o.color && <span className="dot" style={{ background: o.color }} />}{o.label}
+            <button className="chip" aria-pressed={on} data-tip={on && value.length === 1 ? 'לחיצה נוספת: חזרה להכול' : 'לחיצה: רק ' + o.label} onClick={() => onChange(on && value.length === 1 ? [] : [o.key])}>
+              {o.icon ?? (o.color && <span className="dot" style={{ background: o.color }} />)}{o.label}
             </button>
             {!all && (
               <button className="chip chip-add" aria-label={(on ? 'הסרת ' : 'הוספת ') + o.label}
-                onClick={() => onChange(on ? value.filter((k) => k !== o.key) : [...value, o.key])}>{on ? '−' : '+'}</button>
+                data-tip={on ? 'הסרה מהבחירה' : 'הוספה לבחירה'} onClick={() => onChange(on ? value.filter((k) => k !== o.key) : [...value, o.key])}>{on ? '−' : '+'}</button>
             )}
           </span>
         );
