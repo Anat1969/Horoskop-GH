@@ -5,7 +5,7 @@ import { search } from '../lib/search';
 import { Glyph } from './Glyph';
 import { load, save } from '../lib/store';
 
-const LINKS: [string, string][] = [['atlas', 'אטלס'], ['quiz', 'אבחון'], ['flex', 'גמישות'], ['sky', 'השמיים'], ['read', 'כתבה']];
+const LINKS: [string, string][] = [['atlas', 'אטלס'], ['quiz', 'אבחון'], ['bond', 'קשרים'], ['flex', 'גמישות'], ['sky', 'השמיים'], ['read', 'כתבה']];
 
 export function Topbar({ page }: { page: string }) {
   const [q, setQ] = useState(() => load('q', ''));

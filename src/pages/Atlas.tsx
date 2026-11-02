@@ -1,5 +1,6 @@
 import { SIGNS } from '../data/content';
 import { ELEMENTS, MODES } from '../data/meta';
+import { Purpose } from '../components/Purpose';
 import { Chooser } from '../components/Chooser';
 import { SignCard } from '../components/SignCard';
 import { Rich } from '../lib/rich';
@@ -22,6 +23,7 @@ export function Atlas({ route }: { route: Route }) {
         <h1>12 מבנים, טבלה אחת.</h1>
         <Rich className="explain" text={'כל מזל הוא מפגש של **יסוד** (מה מניע אותך) ו**אופן** (איך אתה פועל).\n==4 יסודות כפול 3 אופנים: 12 מבנים, אף אחד לא מקרי.=='} />
       </header>
+      <Purpose why={'לראות את **כל 12** במבט אחד, ולמה כל מזל נמצא במקומו.'} how={'מסננים לפי **יסוד** ו**אופן**, ולוחצים על מבנה.'} get={'הבנה של **המבנה** שמאחורי המזלות, לא רשימה.'} />
       <div className="card filters">
         <Chooser label="יסוד" opts={ELEMENTS.map((e) => ({ key: e.key, label: e.he, color: e.color }))} value={els} onChange={(v) => setQuery({ el: v.join(',') })} />
         <Chooser label="אופן" opts={MODES.map((m) => ({ key: m.key, label: m.he }))} value={mos} onChange={(v) => setQuery({ mo: v.join(',') })} />
@@ -35,7 +37,7 @@ export function Atlas({ route }: { route: Route }) {
         {ELEMENTS.map((e) => (
           <div key={e.key} style={{ display: 'contents' }}>
             <div className="rh" style={{ borderColor: e.color }}>
-              <b style={{ color: e.color, fontSize: 20 }}>{e.he}<span className="en">{e.en}</span></b>
+              <b style={{ fontSize: 22, fontWeight: 300 }}><span className="swatch" style={{ background: e.color }} />{e.he}<span className="en">{e.en}</span></b>
               <Rich text={e.line} className="src" />
             </div>
             {MODES.map((m) => {
