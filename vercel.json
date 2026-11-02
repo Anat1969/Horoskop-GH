@@ -2,5 +2,5 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "framework": "vite",
-  "ignoreCommand": "git diff --quiet HEAD^ HEAD -- . ':(exclude)app'"
+  "ignoreCommand": "bash -c 'C=$(git diff --name-only HEAD^ HEAD 2>/dev/null); [ -n \"$C\" ] && [ -z \"$(echo \"$C\" | grep -v ^app/)\" ]'"
 }
