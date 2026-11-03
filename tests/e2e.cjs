@@ -11,7 +11,9 @@ const ok = (c, m) => { console.log((c ? 'PASS ' : 'FAIL ') + m); if (!c) fails++
     await ctx.route('**/ai-menu.js', (r) => r.fulfill({ path: path.join(__dirname, 'ai-menu.local.js'), contentType: 'text/javascript' }));
     const p = await ctx.newPage();
     const errs = []; p.on('pageerror', (e) => errs.push(e.message));
-    await p.goto(BASE); await p.waitForSelector('.hero');
+    await p.goto(BASE);
+    if (BASE.includes('githack')) { const op = p.getByText('Open the page'); if (await op.count()) { await op.first().click(); } } // דף הביניים של raw.githack
+    await p.waitForSelector('.hero');
     ok(await p.locator('ai-menu .logo').isVisible(), `${tag}: A&I logo button in the top bar`);
     ok(!(await p.locator('header >> text=העתקת קישור').first().isVisible().catch(() => false)), `${tag}: no loose dev buttons in the bar`);
     ok((await p.locator('html').getAttribute('dir')) === 'rtl', `${tag}: RTL`);
@@ -135,7 +137,9 @@ const ok = (c, m) => { console.log((c ? 'PASS ' : 'FAIL ') + m); if (!c) fails++
   // הפחתת תנועה
   const ctx = await b.newContext({ reducedMotion: 'reduce' });
   await ctx.route('**/ai-menu.js', (r) => r.fulfill({ path: path.join(__dirname, 'ai-menu.local.js'), contentType: 'text/javascript' }));
-  const p = await ctx.newPage(); await p.goto(BASE); await p.waitForSelector('.hero');
+  const p = await ctx.newPage(); await p.goto(BASE);
+  if (BASE.includes('githack')) { const op = p.getByText('Open the page'); if (await op.count()) await op.first().click(); }
+  await p.waitForSelector('.hero');
   ok((await p.locator('.rise').first().evaluate((e) => getComputedStyle(e).animationName)) === 'none', 'reduced motion disables animation');
   // התקנה
   const cdp = await ctx.newCDPSession(p);
