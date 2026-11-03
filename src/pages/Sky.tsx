@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Purpose } from '../components/Purpose';
 import { Wheel } from '../components/Wheel';
+import { Icon } from '../components/Icon';
 import { IconPause, IconPlay, IconX } from '../components/icons';
 import { Rich } from '../lib/rich';
 import { setQuery, type Route } from '../lib/route';
@@ -88,6 +89,12 @@ export function Sky({ route }: { route: Route }) {
           <Rich className="src" text={'**"עידן הדלי"** הוא בדיוק זה: היום שבו נקודת השוויון תעבור מדגים לדלי.\nהעיגול הצהוב: השמש היום. הקו המקווקו: 0°, תחילת טלה.'} />
         </div>
       </section>
+
+      <a href="#/shadow" className="press card shadow-cta">
+        <span className="label"><Icon n="action" size={14} /> ניסוי</span>
+        <strong style={{ fontSize: 22, fontWeight: 300 }}>אותה שמש, על הקרקע: ספר הצל</strong>
+        <span className="src">כמה מטר הצל של מגדל באשדוד בצהרי החורף? נבאו, הרימו מהדף, ומדדו מקל בחצר.</span>
+      </a>
 
       <section className="card">
         <div className="section-title"><h2>תאריכי מזל מול תאריכי כוכבים</h2><span className="label">13 קבוצות, לא 12</span></div>

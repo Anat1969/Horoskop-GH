@@ -12,6 +12,7 @@ import { go } from '../lib/route';
 import { byId, byName, harmonyColor, metrics, relation } from '../lib/relations';
 import { useStored } from '../lib/store';
 import { CopyButton } from '../components/CopyButton';
+import { VoiceButton } from '../components/Voice';
 
 interface Entry { d: string; thought: string; did: boolean }
 const plain = (n: string) => n.replace(/[֑-ׇ]/g, '');
@@ -112,6 +113,7 @@ export function SignPage({ id }: { id: string }) {
             <p className="reflect">"{s.ref}"</p>
             <label className="label" htmlFor="th">מחשבה</label>
             <textarea id="th" value={draft} onChange={(e) => setDraft(e.target.value)} placeholder="מה עולה לך? משפט אחד מספיק." />
+            <VoiceButton value={draft} onText={setDraft} />
             <label className="did"><input type="checkbox" checked={did} onChange={(e) => setDid(e.target.checked)} /> <span><strong>מעשה:</strong> ביצעתי היום את פעולת הגשר</span></label>
             <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
               <button className="press btn btn-primary" onClick={record} disabled={!draft.trim() && !did}>רישום ביומן</button>

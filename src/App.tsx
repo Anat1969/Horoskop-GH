@@ -11,9 +11,10 @@ import { Read } from './pages/Read';
 import { Bond } from './pages/Bond';
 import { Cultures } from './pages/Cultures';
 import { Key } from './pages/Key';
+import { Shadow } from './pages/Shadow';
 import { byId } from './lib/relations';
 
-const TITLES: Record<string, string> = { home: 'מקדש הכוכבים', atlas: 'אטלס', quiz: 'אבחון עצמי', flex: 'סימולטור גמישות', sky: 'השמיים היום', read: 'כתבה', bond: 'קשרים', cultures: 'תרבויות', key: 'מקרא' };
+const TITLES: Record<string, string> = { home: 'מקדש הכוכבים', atlas: 'אטלס', quiz: 'אבחון עצמי', flex: 'סימולטור גמישות', sky: 'השמיים היום', read: 'כתבה', bond: 'קשרים', cultures: 'תרבויות', key: 'מקרא', shadow: 'ספר הצל' };
 
 export function App() {
   const r = useRoute();
@@ -37,6 +38,7 @@ export function App() {
         {page === 'bond' && <Bond route={r} />}
         {page === 'cultures' && <Cultures />}
         {page === 'key' && <Key />}
+        {page === 'shadow' && <Shadow route={r} />}
       </main>
       <footer className="footer">
         <span>מקדש הכוכבים · 12 מבנים, אף אחד מהם אינו גורל.</span>

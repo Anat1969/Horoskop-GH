@@ -1,7 +1,7 @@
 import { Fragment, type ReactNode } from 'react';
 
 // טקסט עשיר: **מודגש**, ==תובנה==, מספרים מודגשים אוטומטית, ושורה חדשה לכל \n.
-const NUM = /(\d[\d,.]*)/g;
+const NUM = /(\d[\d,.:]*\d|\d)/g; // כולל שעה (11:25) כיחידה אחת
 function nums(text: string, key: string): ReactNode[] {
   return text.split(NUM).map((p, i) =>
     /^\d/.test(p) ? <bdi key={key + i} className="num">{p}</bdi> : <Fragment key={key + i}>{p}</Fragment>,

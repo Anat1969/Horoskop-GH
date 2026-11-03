@@ -16,7 +16,7 @@ const ok = (c, m) => { console.log((c ? 'PASS ' : 'FAIL ') + m); if (!c) fails++
     ok(!(await p.locator('header >> text=העתקת קישור').first().isVisible().catch(() => false)), `${tag}: no loose dev buttons in the bar`);
     ok((await p.locator('html').getAttribute('dir')) === 'rtl', `${tag}: RTL`);
     // ניווט בכל הדפים, בלי גלילה אופקית
-    for (const pg of ['atlas', 'sign/leo', 'quiz', 'bond', 'flex', 'sky', 'cultures', 'read', 'key', '']) {
+    for (const pg of ['atlas', 'sign/leo', 'quiz', 'bond', 'flex', 'sky', 'cultures', 'read', 'key', 'shadow', 'shadow?l=2', 'shadow?l=3', '']) {
       await p.goto(BASE + '#/' + pg); await p.waitForTimeout(400);
       const ow = await p.evaluate(() => document.documentElement.scrollWidth - innerWidth);
       ok(ow <= 0, `${tag}: no horizontal scroll on #/${pg}`);
@@ -50,7 +50,7 @@ const ok = (c, m) => { console.log((c ? 'PASS ' : 'FAIL ') + m); if (!c) fails++
     ok(await p.getByText('כמה הפרופיל אמין?').isVisible(), `${tag}: reliability metrics shown`);
     ok((await p.locator('.result-hero h1').textContent()).includes('טָלֶה'), `${tag}: all-fire answers yield Aries`);
     // מטרת הדף בכל דף
-    for (const pg of ['', 'atlas', 'sign/leo', 'bond', 'flex', 'sky', 'cultures', 'read', 'key']) {
+    for (const pg of ['', 'atlas', 'sign/leo', 'bond', 'flex', 'sky', 'cultures', 'read', 'key', 'shadow']) {
       await p.goto(BASE + '#/' + pg); await p.waitForTimeout(250);
       ok(await p.getByRole('region', { name: 'מטרת הדף' }).isVisible(), `${tag}: purpose block on #/${pg}`);
     }
@@ -97,6 +97,29 @@ const ok = (c, m) => { console.log((c ? 'PASS ' : 'FAIL ') + m); if (!c) fails++
     // תוויות לכפתורים חבויים
     await p.goto(BASE + '#/sign/aries'); await p.waitForTimeout(300);
     ok((await p.locator('.ops [data-tip]').count()) === 3, `${tag}: icon buttons carry tooltips`);
+    // ספר הצל
+    await p.goto(BASE + '#/shadow'); await p.waitForTimeout(400);
+    ok(await p.getByText('קודם נועלים ניחוש').isVisible(), `${tag}: test zone locked until a guess`);
+    await p.fill('#g1', '14'); await p.getByRole('button', { name: 'נעילת הניחוש' }).click();
+    await p.getByRole('button', { name: /הרמת המגדל/ }).click(); await p.waitForTimeout(600);
+    ok((await p.locator('.params3').textContent()).includes('34.8'), `${tag}: Ashdod winter noon sun at 34.8°`);
+    ok((await p.locator('.params3').textContent()).includes('14.4'), `${tag}: 10 m tower casts 14.4 m shadow`);
+    ok(await p.locator('.stamp.on').count() >= 1, `${tag}: close guess earns a stamp`);
+    await p.getByRole('button', { name: '21 ביוני' }).click();
+    ok((await p.locator('.params3').textContent()).includes('81.6'), `${tag}: summer noon sun at 81.6°`);
+    await p.goto(BASE + '#/shadow?l=2'); await p.waitForTimeout(300);
+    await p.getByRole('button', { name: '20 ס"מ' }).click();
+    ok(await p.getByText('נכון! חותמת').isVisible(), `${tag}: overhang 20 cm is right`);
+    await p.goto(BASE + '#/shadow?l=3'); await p.waitForTimeout(300);
+    await p.getByRole('button', { name: '32°' }).click();
+    ok(await p.getByText('נכון! חותמת').isVisible(), `${tag}: equinox shadow angle equals latitude`);
+    ok(!(await p.locator('.page-text').textContent()).includes('25:'), `${tag}: clock time not reversed`);
+    // הקלטה ליד כל שדה טקסט חופשי
+    for (const pg of ['shadow?l=3', 'sign/aries']) {
+      await p.goto(BASE + '#/' + pg); await p.waitForTimeout(300);
+      const ta = await p.locator('textarea').count(), vb = await p.locator('.voice-btn').count();
+      ok(ta > 0 && vb === ta, `${tag}: voice button next to every textarea on #/${pg}`);
+    }
     // גמישות
     await p.goto(BASE + '#/flex'); await p.waitForTimeout(300);
     await p.locator('.pick', { hasText: 'סרטן' }).click();
